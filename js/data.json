@@ -1,0 +1,14 @@
+{
+    "posts": [
+        {
+            "id": 0,
+            "message": "Vous êtes toujours à la recherche des meilleurs prestataires de transport international ? <br/> SOUPER LOGISTICS a la solution pour vous ! <br/> Envoyez-nous un mail pour une demande de cotation .",
+            "imgUrl": "./img/img0.jpg"
+        },
+        {
+            "id": 1,
+            "message": "Ayant l’expertise de fournir des prestations aérien Cargo partout au monde, nous nous engageons à vous procurer LA solution de fret rapide, pas chère et adaptée à vos besoins !",
+            "imgUrl": "./img/img1.jpg"
+        }
+    ]
+}

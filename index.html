@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+
+
+</head>
+
+<body>
+    <!-- navgation bar area  -->
+    <nav>
+        <div class="logo">
+            <span>SUPPER</span> LOGISTICS
+        </div>
+        <!-- hamburger area  -->
+        <div class="hamburger">
+            <i class="fa fa-bars" aria-hidden="true"></i>
+        </div>
+        <div class="navmenu">
+            <ul class="menu">
+                <li class="menuitem"><a href="">HOME</a></li>
+                <li class="menuitem"><a href="">ABOUT</a></li>
+                <li class="menuitem"><a href="">SERVICES</a></li>
+                <li class="menuitem"><a href="">CONTACT US</a></li>
+            </ul>
+            <form class="search_form">
+                <input type="search" name="" id="" placeholder="search">
+                <button type="submit">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- home main  -->
+
+    <section class="home__main">
+        <div class="home__main_inner">
+            <h1 class="subtitle">
+                Obtenez-vous <span class="printDescJS"></span>
+            </h1>
+            <a href="#posts" class="btn">
+                <span>Lire La Suite</span>
+                <span>Lire La Suite</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- posts area   -->
+    <section class="posts__area" id="posts">
+        <h1 class="header">Posts</h1>
+        <div class="posts__inner">
+
+            <!-- posts output  -->
+
+        </div>
+    </section>
+
+    <!-- footer area  -->
+
+    <footer>
+        <div class="footer__inner">
+            <div class="logo">
+                <span>SUPPER</span> LOGISTICS
+            </div>
+            <ul class="menu">
+                <li class="menuitem"><a href="">HOME</a></li>
+                <li class="menuitem"><a href="">ABOUT</a></li>
+                <li class="menuitem"><a href="">SERVICES</a></li>
+                <li class="menuitem"><a href="">CONTACT US</a></li>
+            </ul>
+        </div>
+        <span>Copyright &copy; All Right Reserved</span>
+    </footer>
+
+    <script src="js/apps.js"></script>
+
+    <script>
+
+        window.addEventListener('load', () => {
+
+            var postArea = document.querySelector('.posts__inner');
+            var output = "";
+            // get posts from data.json 
+            const newReq = new XMLHttpRequest();
+            newReq.onreadystatechange = function () {
+                // if readystate == 4 => the response ready to displaying
+                if (this.readyState == 4 && this.status == 200) {
+                    Promise.resolve(this.responseText).then(data => {
+                        // console.log(data);
+                        const myData = JSON.parse(data);
+                        const Posts = myData.posts;
+
+                        // ready posts to print 
+                        Posts.map((post) => {
+                            output += `<div class="post" id="${post.id}">
+                                       <img src="${post.imgUrl}" class="img_posts" />
+                                       <div class="sub_desc">
+                                        ${post.message}
+                                       </div>
+                                       <div class="btn_area">
+                                             <a href="" onclick="Preve(event)" class="btn-detail">des details</a>
+                                             <div class="social_media media${post.id}">
+                                                    <a onclick="shareFc(${post.id},event)"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                                                    <a onclick="shareTw(${post.id},event)"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                                                    <a onclick="shareInk(${post.id},event)"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                                             </div>
+                                       </div>
+                                       </div>`;
+                        })
+                        postArea.innerHTML += output;
+                    })
+                }
+            }
+            newReq.open("GET", "./js/data.json", true);
+            newReq.send();
+
+        })
+
+
+        // get post url 
+        var postUrl = encodeURI(document.location.href);
+
+        // share with facebook 
+        function shareFc(id, event) {
+
+            const req = new XMLHttpRequest();
+            req.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    Promise.resolve(this.responseText).then(data => {
+                        const myData = JSON.parse(data);
+                        const Posts = myData.posts;
+                        var post = Posts.find(item => item.id == id);
+                        event.target.setAttribute(
+                            "href",
+                            `https://www.facebook.com/sharer.php?u=${postUrl}`
+                        );
+                    })
+                }
+            }
+            req.open("GET", "./js/data.json", true);
+            req.send();
+        }
+
+        // share with twitter
+        function shareTw(id, event) {
+
+            const req = new XMLHttpRequest();
+            req.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    Promise.resolve(this.responseText).then(data => {
+                        const myData = JSON.parse(data);
+                        const Posts = myData.posts;
+                        const post = Posts.find(item => item.id == id);
+                        const postTitle = post.message;
+                        event.target.setAttribute(
+                            "href",
+                            `https://twitter.com/share?url=${postUrl}&text=${postTitle}`
+                        );
+                    })
+                }
+            }
+            req.open("GET", "./js/data.json", true);
+            req.send();
+        }
+
+        // share with  linkedin
+        function shareInk(id, event) {
+
+            const req = new XMLHttpRequest();
+            req.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    Promise.resolve(this.responseText).then(data => {
+                        const myData = JSON.parse(data);
+                        const Posts = myData.posts;
+                        var post = Posts.find(item => item.id == id);
+                        const postTitle = post.message;
+                        event.target.setAttribute(
+                            "href",
+                            `https://www.linkedin.com/shareArticle?url=${postUrl}&title=${postTitle}`
+                        );
+                    })
+                }
+            }
+            req.open("GET", "./js/data.json", true);
+            req.send();
+        }
+
+
+    </script>
+</body>
+
+</html>
